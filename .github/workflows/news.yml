@@ -1,6 +1,11 @@
 name: News Bot
 on:
-  workflow_dispatch: # 手動で動かすボタンを出す設定
+  schedule:
+    # 毎日 朝7:00（日本時間）に自動実行する設定
+    # ※UTC時間なので、22:00が日本時間の朝7:00になります
+    - cron: '0 22 * * *'
+  workflow_dispatch: # 手動ボタンも残しておきます
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,4 +20,6 @@ jobs:
       - name: Run script
         env:
           LINE_TOKEN: ${{ secrets.LINE_TOKEN }}
+          USER_ID: ${{ secrets.USER_ID }}
+          NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
         run: python main.py
