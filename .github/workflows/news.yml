@@ -1,24 +1,27 @@
 name: News Bot
+
 on:
   schedule:
-    # １0分ごとに自動で動く魔法の言葉
     - cron: '*/10 * * * *'
-  workflow_dispatch: # 手動で動かすボタンも残しておきます
+  workflow_dispatch:
 
 jobs:
-  build:
+  run:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python
+
+      - name: Python setup
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
-      - name: Install dependencies
+          python-version: '3.10'
+
+      - name: Install packages
         run: pip install requests
+
       - name: Run script
+        run: python main.py
         env:
           LINE_TOKEN: ${{ secrets.LINE_TOKEN }}
-          USER_ID: ${{ secrets.USER_ID }}
           NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
-        run: python main.py
